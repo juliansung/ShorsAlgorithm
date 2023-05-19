@@ -1,10 +1,11 @@
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-//        BigInteger N = new BigInteger("185585902431430716049");
+//        BigInteger N = new BigInteger("1524170793558072083");
 //        BigInteger factor = shorsAlgorithm.shorsAlgorithm(N);
 //        BigInteger factor2 = N.divide(factor);
 //        System.out.println("Factors of " + N + " are " + factor + " and " + factor2);
@@ -54,17 +55,31 @@ public class Main {
         }else if(input.equalsIgnoreCase("D")){
             decrypt();
         }
+
     }
 
-    public static boolean isPrime(long n)
-    {
-        if (n <= 1)
+    public static boolean isPrime(BigInteger num) {
+        if (num.compareTo(BigInteger.ONE) <= 0) {
             return false;
-        for (int i = 2; i < n; i++)
-            if (n % i == 0)
-                return false;
-        return true;
+        }
+        return num.isProbablePrime(100);
     }
+
+    private static BigInteger generatePrime(int numDigits) {
+        BigInteger min = BigInteger.TEN.pow(numDigits - 1);
+        BigInteger max = BigInteger.TEN.pow(numDigits);
+        BigInteger prime = new BigInteger(numDigits * 5, new Random());
+
+        while (prime.compareTo(max) < 0) {
+            if (prime.isProbablePrime(100)) {
+                return prime;
+            }
+            prime = prime.add(BigInteger.ONE);
+        }
+
+        return prime;
+    }
+
 
     public static String decrypt(){
         Scanner scan = new Scanner(System.in);
@@ -75,10 +90,10 @@ public class Main {
         if(input.equals("N")) {
             System.out.println(ok);
             return ok;
-        }else if(input.equals("P")){
+        }else if(input.equalsIgnoreCase("P")){
             System.out.println("Enter your primes.");
-            int prime1 = scan.nextInt();
-            int prime2 = scan.nextInt();
+            BigInteger prime1 = scan.nextBigInteger();
+            BigInteger prime2 = scan.nextBigInteger();
             System.out.println("Enter your message.");
             scan.nextLine();
             String encrypted = scan.nextLine();
@@ -132,13 +147,14 @@ public class Main {
 //            BigInteger N = n;
 //            BigInteger factor1 = shorsAlgorithm.shorsAlgorithm(N);
 //            System.out.println("Your primes were " + factor1 + " and " +  N.divide(factor1));
-//            e554000g98ae6ccdg6a01d01bge554000g
-//            Your primes were 663526531001 and 354656231779
-//            The private key is 201706130716447116101143, 235323819170206484880779
-//            The public key is 7, 235323819170206484880779
+//            test
+//17d140gfb89dg1734ebg17d140g
+//Your primes were 355427 and 4358129
+//The private key is 1032661335019, 1548996716083
+//The public key is 3, 1548996716083
             return text2;
         }else if(input.equalsIgnoreCase("G")) {
-            System.out.println("Enter your key.");
+            System.out.println("Enter your key.  The computer will take some time to process your input.  Numbers over 20 digits will take more than a few minutes.");
             BigInteger e = scan.nextBigInteger();
             BigInteger n = scan.nextBigInteger();
             BigInteger p = shorsAlgorithm.shorsAlgorithm(n);
@@ -188,7 +204,7 @@ public class Main {
             System.out.println(ok);
             return ok;
         }
-        else if(input.equals("R")){
+        else if(input.equalsIgnoreCase("R")){
             System.out.println("Enter your message.");
             String plainText = null;
             plainText = scan.nextLine();
@@ -212,16 +228,32 @@ public class Main {
             return encryptedText;
 
         }
-        else if(input.equals("P")){
-            System.out.println("Enter your primes.");
-            long p = scan.nextLong();
-            long q = scan.nextLong();
+        else if(input.equalsIgnoreCase("P")){
+            System.out.println("Enter your primes. Alternatively, enter I if you want some inspiration. ");
+            if(scan.next().equalsIgnoreCase("I")){
+                System.out.println("Enter the amount of digits you want.");
+                System.out.println("If the product of your two primes exceeds 20 digits or so it will take a while.");
+                int digits = scan.nextInt();
+                BigInteger prime1 = generatePrime(digits);
+                System.out.println(prime1);
+                System.out.println("You can press I again, or enter your two primes.");
+            }
+            if(scan.next().equalsIgnoreCase("I")){
+                System.out.println("Enter the amount of digits you want.");
+                int digits = scan.nextInt();
+                BigInteger prime2 = generatePrime(digits);
+                System.out.println(prime2);
+                System.out.println("Enter the two generated primes.");
+            }
+
+            BigInteger p = scan.nextBigInteger();
+            BigInteger q = scan.nextBigInteger();
 
             while(!isPrime(p)&&isPrime(q)){
                 System.out.println("Not prime.  Try again.");
                 System.out.println("Enter your primes.");
-                p = scan.nextInt();
-                q = scan.nextInt();
+                p = scan.nextBigInteger();
+                q = scan.nextBigInteger();
             }
 //            System.out.println("These numbers are prime.");
             rsa.setP(p);
@@ -251,8 +283,8 @@ public class Main {
             return encryptedText;
         }else if(input.equals("S")){
             System.out.println("Enter your key.");
-            int e = scan.nextInt();
-            int n = scan.nextInt();
+            BigInteger e = scan.nextBigInteger();
+            BigInteger n = scan.nextBigInteger();
 //            System.out.println("These numbers are prime.");
             rsa.setE(e);
             rsa.setN(n);
@@ -269,13 +301,13 @@ public class Main {
             BigInteger[] encryptedInt = new BigInteger[chars.length];
             String encryptedHex = new String();
             for(int i = 0; i<chars.length; i++){
-                encryptedInt[i] = rsa.encryptSpecific(values[i],BigInteger.valueOf(e), BigInteger.valueOf(n));
+                encryptedInt[i] = rsa.encryptSpecific(values[i],e, n);
                 encryptedHex += Integer.toHexString(encryptedInt[i].intValue()) + "g";
             }
             String encryptedText = encryptedHex;
             System.out.println(encryptedText);
-            BigInteger N = BigInteger.valueOf(n);
-            BigInteger factor1 = shorsAlgorithm.shorsAlgorithm(BigInteger.valueOf(n));
+            BigInteger N = (n);
+            BigInteger factor1 = shorsAlgorithm.shorsAlgorithm(n);
             System.out.println("Your primes were " + factor1 + " and " +  N.divide(factor1));
             return encryptedText;
         }

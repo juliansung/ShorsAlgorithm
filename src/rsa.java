@@ -27,9 +27,9 @@ public class rsa {
 
         d = e.modInverse(lambda);
     }
-    public void rsaSpecific(long prime1, long prime2) {
-        p = BigInteger.valueOf(prime1);
-        q = BigInteger.valueOf(prime2);
+    public void rsaSpecific(BigInteger prime1, BigInteger prime2) {
+        p = prime1;
+        q = prime2;
 
         n = p.multiply(q);
 
@@ -43,26 +43,21 @@ public class rsa {
         d = e.modInverse(lambda);
     }
 
-    public static void setP(long p1){
-        BigInteger p1B = BigInteger.valueOf(p1);
-        p = p1B;
+    public static void setP(BigInteger p1){
+        p=p1;
     }
-    public static void setQ(long q1){
-        BigInteger q1B = BigInteger.valueOf(q1);
-        q = q1B;
+    public static void setQ(BigInteger q1){
+        q=q1;
     }
 
-    public static void setD(int d1){
-        BigInteger d1B = BigInteger.valueOf(d1);
-        d = d1B;
+    public static void setD(BigInteger d1){
+        d=d1;
     }
-    public static void setE(int e1){
-        BigInteger e1B = BigInteger.valueOf(e1);
-        e = e1B;
+    public static void setE(BigInteger e1){
+        e=e1;
     }
-    public static void setN(int n1){
-        BigInteger n1B = BigInteger.valueOf(n1);
-        n = n1B;
+    public static void setN(BigInteger n1){
+        n=n1;
     }
 
     public static BigInteger encrypt(BigInteger message){
