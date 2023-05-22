@@ -13,17 +13,16 @@ public class rsa {
     static BigInteger d;
 
     public rsa() {
-        p = BigInteger.probablePrime(16, new Random());
-        q = BigInteger.probablePrime(16, new Random());
+        p = BigInteger.probablePrime(24, new Random());
+        q = BigInteger.probablePrime(24, new Random());
 
         n = p.multiply(q);
 
         lambda = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
 
         e = BigInteger.valueOf(3);
-        while (lambda.gcd(e).intValue() > 1){
-            e = e.add(BigInteger.valueOf(2));
-        }
+        while (lambda.gcd(e).intValue() > 1) e = e.add(BigInteger.valueOf(2));
+
 
         d = e.modInverse(lambda);
     }
@@ -36,9 +35,7 @@ public class rsa {
         lambda = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
 
         e = BigInteger.valueOf(3);
-        while (lambda.gcd(e).intValue() > 1){
-            e = e.add(BigInteger.valueOf(2));
-        }
+        while (lambda.gcd(e).intValue() > 1) e = e.add(BigInteger.valueOf(2));
 
         d = e.modInverse(lambda);
     }
@@ -69,7 +66,6 @@ public class rsa {
     public static BigInteger decrypt(BigInteger encryptedMessage){
         return encryptedMessage.modPow(d,n);
     }
-
     public static BigInteger decryptSpecific(BigInteger message, BigInteger d, BigInteger n){ return message.modPow(d,n);}
 
 //    public static BigInteger forceDecrypt(BigInteger encrypted){
