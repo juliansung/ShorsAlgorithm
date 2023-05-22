@@ -13,8 +13,8 @@ public class rsa {
     static BigInteger d;
 
     public rsa() {
-        p = BigInteger.probablePrime(24, new Random());
-        q = BigInteger.probablePrime(24, new Random());
+        p = BigInteger.probablePrime(16, new Random());
+        q = BigInteger.probablePrime(16, new Random());
 
         n = p.multiply(q);
 

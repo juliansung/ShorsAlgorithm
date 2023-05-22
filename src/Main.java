@@ -4,16 +4,16 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
 //          long startTime = System.currentTimeMillis();
-//        BigInteger N = new BigInteger("10097063");
+//        BigInteger N = new BigInteger("853861");
 //        BigInteger factor = ShorsAlgorithm.findFactors(N).get(0);
 //        BigInteger factor2 = N.divide(factor);
 //        System.out.println("Factors of " + N + " are " + factor + " and " + factor2);
 //        long endTime = System.currentTimeMillis();
 //        System.out.println("Processing time = " + (endTime-startTime));
-//        2d06ff8gcad9c22g1a50dadg4d32fa5g80de2g
-//Your primes were 7079 and 39397
-//The private key is 167306933, 278891363
-//The public key is 5, 278891363
+//      27b0fg2618dg145f3g2f33eg2dec0g23fb3g50a6g109bbg8000g1a35eg27b0fg24202g50a6g1d276g27b0fg50a6g
+//Your primes were 1787 and 113
+//The private key is 133355, 201931
+//The public key is 3, 201931
         Scanner scan = new Scanner(System.in);
         System.out.println("Welcome. Input E for encryption and D for decryption");
         String input = scan.nextLine();
@@ -121,18 +121,19 @@ public class Main {
             System.out.println("Enter your key.  The computer will take some time to process your input.  Numbers over 10 digits will take more than a few minutes. 4/5 digits works well.");
             BigInteger e = scan.nextBigInteger();
             BigInteger n = scan.nextBigInteger();
+            System.out.println("Enter your message.");
+            scan.nextLine();
+            String encrypted = scan.nextLine();
             long startTime1 = System.currentTimeMillis();
-            List<BigInteger> factors = ShorsAlgorithm.findFactors(n);
-            BigInteger p = factors.get(0);
-            BigInteger q = factors.get(1);
+//            List<BigInteger> factors = ShorsAlgorithm.findFactors(n);
+            BigInteger p = ShorsAlgorithm.findFactors(n).get(0);
+            BigInteger q = n.divide(p);
             BigInteger lambda = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
             BigInteger e1 = BigInteger.valueOf(3);
             while (lambda.gcd(e1).intValue() > 1) e1 = e1.add(BigInteger.valueOf(2));
             BigInteger d = e1.modInverse(lambda);
             long endTime1 = System.currentTimeMillis();
-            System.out.println("Enter your message.");
-            scan.nextLine();
-            String encrypted = scan.nextLine();
+
             long startTime2 = System.currentTimeMillis();
             String[] splitHex = encrypted.split("g");
             BigInteger[] decrypted = new BigInteger[splitHex.length];
